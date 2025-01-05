@@ -1,4 +1,4 @@
-export type ProfileStatus = 'active' | 'inactive' | 'pending';
+export type ProfileStatus = "active" | "inactive" | "pending";
 
 export interface UserProfile {
   id: string;
@@ -16,7 +16,7 @@ export interface UserProfile {
     linkedin?: string;
     github?: string;
   };
-  createdAt: string;
+  created_at: string;
   updatedAt: string;
 }
 

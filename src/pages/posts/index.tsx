@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
@@ -7,30 +7,39 @@ import { fetchPosts } from '../../store/slices/posts-slice';
 import { PostCard } from './components/post-card';
 import { Button } from '../../components/ui/button';
 import { TagFilter } from '../../components/posts/tag-filter';
+import { Pagination } from '../../components/ui/pagination';
+import { LoadingSpinner } from '../../components/ui/loading-spinner';
 import { TagsService } from '../../services/tags-service';
 import { Tag } from '../../types/tag';
 
 export default function PostsPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { posts, loading } = useSelector((state: RootState) => state.posts);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const { posts, currentPage, totalPages, loading } = useSelector((state: RootState) => state.posts);
+  const [tags, setTags] = React.useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = React.useState<number[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tagsData = await TagsService.getTags();
-        setTags(tagsData);
-        dispatch(fetchPosts());
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
-    fetchData();
-  }, [dispatch]);
+    loadData();
+  }, [dispatch, currentPage]);
+
+  const loadData = async () => {
+    try {
+      const [tagsData] = await Promise.all([
+        TagsService.getTags(),
+        dispatch(fetchPosts(currentPage)).unwrap()
+      ]);
+      setTags(tagsData);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    dispatch(fetchPosts(page));
+  };
 
   const handleTagSelect = (tagId: number) => {
-    setSelectedTags(prev => 
+    setSelectedTags(prev =>
       prev.includes(tagId)
         ? prev.filter(id => id !== tagId)
         : [...prev, tagId]
@@ -39,16 +48,12 @@ export default function PostsPage() {
 
   const filteredPosts = selectedTags.length > 0
     ? posts.filter(post =>
-        post.tags.some(tag => selectedTags.includes(tag.id))
-      )
+      post.tags.some(tag => selectedTags.includes(tag.id))
+    )
     : posts;
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-      </div>
-    );
+  if (loading && posts.length === 0) {
+    return <LoadingSpinner />;
   }
 
   return (
@@ -68,7 +73,7 @@ export default function PostsPage() {
         selectedTags={selectedTags}
         onTagSelect={handleTagSelect}
       />
-      
+
       {filteredPosts.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-lg text-muted-foreground">
@@ -76,11 +81,21 @@ export default function PostsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </>
       )}
     </div>
   );

@@ -1,26 +1,21 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/auth-context';
 import { ProtectedRoute } from './components/layout/protected-route';
-import { ProtectedAdminRoute } from './components/admin/protected-admin-route';
 import { AppLayout } from './components/layout/app-layout';
 import { LoadingSpinner } from './components/ui/loading-spinner';
 
-// Auth pages
+// Lazy load pages
 const LoginPage = React.lazy(() => import('./pages/auth/login'));
 const RegisterPage = React.lazy(() => import('./pages/auth/register'));
 const ForgotPasswordPage = React.lazy(() => import('./pages/auth/forgot-password'));
-
-// User pages
 const HomePage = React.lazy(() => import('./pages/home'));
 const PostsPage = React.lazy(() => import('./pages/posts'));
 const PostDetailPage = React.lazy(() => import('./pages/posts/[id]'));
 const ProfilePage = React.lazy(() => import('./pages/profile'));
-
-// Admin pages
 const AdminUsersPage = React.lazy(() => import('./pages/admin/users'));
-const AdminPostsPage = React.lazy(() => import('./pages/admin/posts/index'));
+const AdminPostsPage = React.lazy(() => import('./pages/admin/posts'));
 const AdminTagsPage = React.lazy(() => import('./pages/admin/tags'));
 
 function App() {
@@ -46,10 +41,8 @@ function App() {
           } />
 
           {/* Protected routes */}
-          <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+          <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="/home" replace />} />
-            
-            {/* User routes */}
             <Route path="home" element={
               <Suspense fallback={<LoadingSpinner />}>
                 <HomePage />
@@ -70,9 +63,7 @@ function App() {
                 <ProfilePage />
               </Suspense>
             } />
-
-            {/* Admin routes */}
-            <Route path="admin" element={<ProtectedAdminRoute><Outlet /></ProtectedAdminRoute>}>
+            <Route path="admin">
               <Route path="users" element={
                 <Suspense fallback={<LoadingSpinner />}>
                   <AdminUsersPage />

@@ -1,18 +1,33 @@
-import { User } from '../types/auth';
-import { Post } from '../types/post';
-import { Tag } from '../types/tag';
-import { UserProfile } from '../types/profile';
-import { mockUsers } from '../data/mock-users';
-import { mockPosts } from '../data/mock-posts';
-import { delay } from '../lib/utils';
+import { User } from "../types/auth";
+import { Post } from "../types/post";
+import { Tag } from "../types/tag";
+import { UserProfile } from "../types/profile";
+import { mockUsers } from "../data/mock-users";
+import { mockPosts } from "../data/mock-posts";
+import { delay } from "../lib/utils";
 
 // In-memory storage
 let users = [...mockUsers];
 let posts = [...mockPosts];
 let tags = [
-  { id: 1, name: "React", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-  { id: 2, name: "TypeScript", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-  { id: 3, name: "Frontend", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  {
+    id: 1,
+    name: "React",
+    created_at: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    name: "TypeScript",
+    created_at: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 3,
+    name: "Frontend",
+    created_at: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
 ];
 
 // Mock profiles storage
@@ -32,8 +47,8 @@ export const AdminService = {
       username: data.username!,
       email: data.email!,
       name: data.name!,
-      role: data.role || 'user',
-      createdAt: new Date().toISOString(),
+      role: data.role || "user",
+      created_at: new Date().toISOString(),
     };
     users = [newUser, ...users];
     return newUser;
@@ -41,9 +56,9 @@ export const AdminService = {
 
   async updateUser(id: string, data: Partial<User>): Promise<User> {
     await delay(500);
-    const index = users.findIndex(user => user.id === id);
-    if (index === -1) throw new Error('User not found');
-    
+    const index = users.findIndex((user) => user.id === id);
+    if (index === -1) throw new Error("User not found");
+
     const updatedUser = { ...users[index], ...data };
     users[index] = updatedUser;
     return updatedUser;
@@ -51,7 +66,7 @@ export const AdminService = {
 
   async deleteUser(id: string): Promise<void> {
     await delay(500);
-    users = users.filter(user => user.id !== id);
+    users = users.filter((user) => user.id !== id);
     profiles.delete(id);
   },
 
@@ -69,8 +84,8 @@ export const AdminService = {
       title: data.title!,
       body: data.body!,
       imageUrl: data.imageUrl,
-      status: data.status || 'draft',
-      createdAt: new Date().toISOString(),
+      status: data.status || "draft",
+      created_at: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       tags: data.tags || [],
       likes: 0,
@@ -78,8 +93,8 @@ export const AdminService = {
       author: {
         id: 1,
         name: "Current User",
-        avatar: undefined
-      }
+        avatar: undefined,
+      },
     };
     posts = [newPost, ...posts];
     return newPost;
@@ -87,13 +102,13 @@ export const AdminService = {
 
   async updatePost(id: number, data: Partial<Post>): Promise<Post> {
     await delay(500);
-    const index = posts.findIndex(post => post.id === id);
-    if (index === -1) throw new Error('Post not found');
-    
-    const updatedPost = { 
+    const index = posts.findIndex((post) => post.id === id);
+    if (index === -1) throw new Error("Post not found");
+
+    const updatedPost = {
       ...posts[index],
       ...data,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
     posts[index] = updatedPost;
     return updatedPost;
@@ -101,7 +116,7 @@ export const AdminService = {
 
   async deletePost(id: number): Promise<void> {
     await delay(500);
-    posts = posts.filter(post => post.id !== id);
+    posts = posts.filter((post) => post.id !== id);
   },
 
   // Tags
@@ -115,7 +130,7 @@ export const AdminService = {
     const newTag: Tag = {
       id: tags.length + 1,
       name: data.name!,
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
     tags = [...tags, newTag];
@@ -124,9 +139,9 @@ export const AdminService = {
 
   async updateTag(id: number, data: Partial<Tag>): Promise<Tag> {
     await delay(500);
-    const index = tags.findIndex(tag => tag.id === id);
-    if (index === -1) throw new Error('Tag not found');
-    
+    const index = tags.findIndex((tag) => tag.id === id);
+    if (index === -1) throw new Error("Tag not found");
+
     const updatedTag = { ...tags[index], ...data };
     tags[index] = updatedTag;
     return updatedTag;
@@ -134,39 +149,42 @@ export const AdminService = {
 
   async deleteTag(id: number): Promise<void> {
     await delay(500);
-    tags = tags.filter(tag => tag.id !== id);
+    tags = tags.filter((tag) => tag.id !== id);
   },
 
   // User Profiles
   async getUserProfile(userId: string): Promise<UserProfile> {
     await delay(500);
     let profile = profiles.get(userId);
-    
+
     if (!profile) {
       profile = {
         id: `profile-${userId}`,
         userId,
-        status: 'active',
-        createdAt: new Date().toISOString(),
+        status: "active",
+        created_at: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
       profiles.set(userId, profile);
     }
-    
+
     return profile;
   },
 
-  async updateUserProfile(userId: string, data: Partial<UserProfile>): Promise<UserProfile> {
+  async updateUserProfile(
+    userId: string,
+    data: Partial<UserProfile>
+  ): Promise<UserProfile> {
     await delay(500);
     let profile = await this.getUserProfile(userId);
-    
+
     profile = {
       ...profile,
       ...data,
       updatedAt: new Date().toISOString(),
     };
-    
+
     profiles.set(userId, profile);
     return profile;
-  }
+  },
 };

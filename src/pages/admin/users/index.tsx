@@ -54,11 +54,11 @@ export default function AdminUsersPage() {
 
   const handleUpdateUser = async (data: any) => {
     if (!selectedUser) return;
-    
+
     setIsSubmitting(true);
     try {
       const updatedUser = await AdminService.updateUser(selectedUser.id, data);
-      setUsers(users.map(user => 
+      setUsers(users.map(user =>
         user.id === updatedUser.id ? updatedUser : user
       ));
       toast.success('User updated successfully');
@@ -73,7 +73,7 @@ export default function AdminUsersPage() {
 
   const handleDelete = async () => {
     if (!deleteUserId) return;
-    
+
     setIsDeleting(true);
     try {
       await AdminService.deleteUser(deleteUserId);
@@ -94,7 +94,7 @@ export default function AdminUsersPage() {
   };
 
   const columns = [
-    { 
+    {
       header: 'User Details',
       accessor: (user: User) => (
         <div className="flex items-center gap-3">
@@ -119,7 +119,7 @@ export default function AdminUsersPage() {
         </div>
       )
     },
-    { 
+    {
       header: 'Role & Date',
       accessor: (user: User) => (
         <div className="space-y-1">
@@ -130,7 +130,7 @@ export default function AdminUsersPage() {
             {user.role}
           </span>
           <div className="text-sm text-muted-foreground">
-            Joined {formatDate(user.createdAt)}
+            Joined {formatDate(user.created_at)}
           </div>
         </div>
       )
@@ -169,14 +169,14 @@ export default function AdminUsersPage() {
 
   return (
     <div className="p-6">
-      <AdminHeader 
-        title="User Management" 
+      <AdminHeader
+        title="User Management"
         onAdd={handleAddUser}
         addButtonText="Add User"
       />
-      
+
       <AdminTable columns={columns} data={users} />
-      
+
       <UserDialog
         isOpen={isUserDialogOpen}
         user={selectedUser || undefined}

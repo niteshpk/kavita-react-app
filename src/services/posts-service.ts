@@ -1,38 +1,38 @@
-import { Post } from '../types/post';
-import { mockPosts } from '../data/mock-posts';
-
-// Simulate API delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import { Post, PaginatedResponse } from "../types/post";
+import api from "../lib/api";
 
 export const PostsService = {
-  async getPosts(): Promise<Post[]> {
-    await delay(800); // Simulate network delay
-    return mockPosts;
+  async getPosts(page: number = 1): Promise<PaginatedResponse<Post>> {
+    const response = await api.get<PaginatedResponse<Post>>("/posts", {
+      params: { page },
+    });
+    return response.data;
   },
 
   async getPost(id: number): Promise<Post | undefined> {
-    await delay(500);
-    return mockPosts.find(post => post.id === id);
+    const response = await api.get<{ success: boolean; data: Post }>(
+      `/posts/${id}`
+    );
+    return response.data.data;
   },
 
   async createPost(post: Partial<Post>): Promise<Post> {
-    await delay(1000);
-    const newPost: Post = {
-      id: mockPosts.length + 1,
-      author_id: 1, // Current user ID
-      title: post.title!,
-      body: post.body!,
-      imageUrl: post.imageUrl,
-      status: 'published',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      author: {
-        id: 1,
-        name: "Current User",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop"
-      }
-    };
-    mockPosts.unshift(newPost);
-    return newPost;
-  }
+    const response = await api.post<{ success: boolean; data: Post }>(
+      "/posts",
+      post
+    );
+    return response.data.data;
+  },
+
+  async updatePost(id: number, post: Partial<Post>): Promise<Post> {
+    const response = await api.put<{ success: boolean; data: Post }>(
+      `/posts/${id}`,
+      post
+    );
+    return response.data.data;
+  },
+
+  async deletePost(id: number): Promise<void> {
+    await api.delete(`/posts/${id}`);
+  },
 };

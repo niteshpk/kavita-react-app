@@ -52,11 +52,11 @@ export default function AdminTagsPage() {
 
   const handleUpdateTag = async (data: any) => {
     if (!selectedTag) return;
-    
+
     setIsSubmitting(true);
     try {
       const updatedTag = await AdminService.updateTag(selectedTag.id, data);
-      setTags(tags.map(tag => 
+      setTags(tags.map(tag =>
         tag.id === updatedTag.id ? updatedTag : tag
       ));
       toast.success('Tag updated successfully');
@@ -71,7 +71,7 @@ export default function AdminTagsPage() {
 
   const handleDelete = async () => {
     if (!deleteTagId) return;
-    
+
     setIsDeleting(true);
     try {
       await AdminService.deleteTag(deleteTagId);
@@ -92,13 +92,13 @@ export default function AdminTagsPage() {
   };
 
   const columns = [
-    { 
+    {
       header: 'Tag Details',
       accessor: (tag: Tag) => (
         <div className="space-y-1">
           <div className="font-medium">{tag.name}</div>
           <div className="text-sm text-muted-foreground">
-            Created {formatDate(tag.createdAt)}
+            Created {formatDate(tag.created_at)}
           </div>
         </div>
       )
@@ -124,14 +124,14 @@ export default function AdminTagsPage() {
 
   return (
     <div className="p-6">
-      <AdminHeader 
-        title="Tag Management" 
+      <AdminHeader
+        title="Tag Management"
         onAdd={handleAddTag}
         addButtonText="Add Tag"
       />
-      
+
       <AdminTable columns={columns} data={tags} />
-      
+
       <TagDialog
         isOpen={isTagDialogOpen}
         tag={selectedTag || undefined}

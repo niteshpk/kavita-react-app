@@ -81,7 +81,7 @@ export default function PostDetailPage() {
 
         <div className="max-w-3xl mx-auto">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">{post.title}</h1>
-          
+
           <div className="flex flex-wrap gap-2 mb-6">
             {post.tags.map(tag => (
               <Tag key={tag.id}>{tag.name}</Tag>

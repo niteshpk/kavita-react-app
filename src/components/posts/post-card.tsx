@@ -12,7 +12,7 @@ export function PostCard({ post }: PostCardProps) {
   const navigate = useNavigate();
 
   return (
-    <article 
+    <article
       className="bg-card rounded-lg overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer"
       onClick={() => navigate(`/posts/${post.id}`)}
     >
@@ -46,7 +46,7 @@ export function PostCard({ post }: PostCardProps) {
             ) : (
               <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-xs font-medium text-primary">
-                  {post.author.name[0]}
+                  {post.author.name}
                 </span>
               </div>
             )}
@@ -54,7 +54,7 @@ export function PostCard({ post }: PostCardProps) {
             <span className="text-muted-foreground sm:hidden">{post.author.name.split(' ')[0]}</span>
           </div>
           <time className="text-muted-foreground text-xs sm:text-sm">
-            {formatDate(post.createdAt)}
+            {formatDate(post.created_at)}
           </time>
         </div>
       </div>

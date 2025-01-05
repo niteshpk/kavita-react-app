@@ -59,11 +59,11 @@ export default function AdminPostsPage() {
 
   const handleUpdatePost = async (data: any) => {
     if (!selectedPost) return;
-    
+
     setIsSubmitting(true);
     try {
       const updatedPost = await AdminService.updatePost(selectedPost.id, data);
-      setPosts(posts.map(post => 
+      setPosts(posts.map(post =>
         post.id === updatedPost.id ? updatedPost : post
       ));
       toast.success('Post updated successfully');
@@ -78,7 +78,7 @@ export default function AdminPostsPage() {
 
   const handleDelete = async () => {
     if (!deletePostId) return;
-    
+
     setIsDeleting(true);
     try {
       await AdminService.deletePost(deletePostId);
@@ -99,7 +99,7 @@ export default function AdminPostsPage() {
   };
 
   const columns = [
-    { 
+    {
       header: 'Post Details',
       accessor: (post: Post) => (
         <div className="space-y-2">
@@ -117,7 +117,7 @@ export default function AdminPostsPage() {
         </div>
       )
     },
-    { 
+    {
       header: 'Author & Date',
       accessor: (post: Post) => (
         <div className="space-y-1">
@@ -131,14 +131,14 @@ export default function AdminPostsPage() {
             ) : (
               <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-xs font-medium text-primary">
-                  {post.author.name[0]}
+                  {post.author.name}
                 </span>
               </div>
             )}
             <span className="text-sm font-medium">{post.author.name}</span>
           </div>
           <div className="text-sm text-muted-foreground">
-            {formatDate(post.createdAt)}
+            {formatDate(post.created_at)}
           </div>
         </div>
       )
@@ -164,14 +164,14 @@ export default function AdminPostsPage() {
 
   return (
     <div className="p-6">
-      <AdminHeader 
-        title="Post Management" 
+      <AdminHeader
+        title="Post Management"
         onAdd={handleAddPost}
         addButtonText="Add Post"
       />
-      
+
       <AdminTable columns={columns} data={posts} />
-      
+
       <PostDialog
         isOpen={isPostDialogOpen}
         post={selectedPost || undefined}

@@ -1,50 +1,82 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../types/auth';
-import api from '../lib/axios';
+import { AuthService } from '../services/auth-service';
+import { handleError } from '../lib/error-handler';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  isAdmin: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
   updateUser: (user: User) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Mock admin user
-const mockAdminUser: User = {
-  id: '1',
-  email: 'admin@example.com',
-  name: 'Admin User',
-  role: 'admin',
-  avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop',
-  createdAt: new Date().toISOString()
-};
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(mockAdminUser); // Set mock admin user
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (token: string, user: User) => {
-    localStorage.setItem('token', token);
-    setUser(user);
-    toast.success('Welcome back!');
+  useEffect(() => {
+    const initAuth = async () => {
+      const token = AuthService.getToken();
+      if (token) {
+        try {
+          // TODO: Implement token validation/refresh logic
+          setLoading(false);
+        } catch (error) {
+          AuthService.removeToken();
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+  }, []);
+
+  const login = (token: string, userData: User) => {
+    try {
+      AuthService.setToken(token);
+      setUser(userData);
+      toast.success('Welcome back!');
+    } catch (error) {
+      console.error('Login error:', handleError(error));
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-    toast.success('Logged out successfully');
+    try {
+      AuthService.removeToken();
+      setUser(null);
+      toast.success('Logged out successfully');
+    } catch (error) {
+      console.error('Logout error:', handleError(error));
+    }
   };
 
   const updateUser = (updatedUser: User) => {
-    setUser(updatedUser);
+    try {
+      setUser(updatedUser);
+    } catch (error) {
+      console.error('Update user error:', handleError(error));
+    }
   };
 
+  const isAdmin = user?.roles?.includes('admin') ?? false;
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      isAdmin,
+      login, 
+      logout, 
+      updateUser 
+    }}>
       {children}
     </AuthContext.Provider>
   );
