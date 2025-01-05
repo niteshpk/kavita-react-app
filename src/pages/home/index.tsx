@@ -1,20 +1,19 @@
 import React from 'react';
-import { useAuth } from '../../context/auth-context';
+import { useAuth } from '../../hooks/use-auth';
+import { UserStats } from './components/user-stats';
+import { RecentActivity } from './components/recent-activity';
+import { WelcomeMessage } from './components/welcome-message';
 
 export default function HomePage() {
   const { user } = useAuth();
 
+  if (!user) return null;
+
   return (
-    <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold">Welcome back, {user?.name}</h1>
-          <p className="text-muted-foreground">
-            Explore the latest blog posts from our community
-          </p>
-          {/* Blog posts feed will be added here */}
-        </div>
-      </main>
+    <div className="space-y-8">
+      <WelcomeMessage user={user} />
+      <UserStats />
+      <RecentActivity />
     </div>
   );
 }

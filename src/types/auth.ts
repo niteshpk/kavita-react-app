@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export type UserRole = 'admin' | 'user';
+export type UserRole = "admin" | "user";
 
 export interface User {
   id: number;
@@ -17,24 +17,28 @@ export interface User {
 export interface AuthResponse {
   success: boolean;
   message?: string;
-  data?: {
+  data: {
     token: string;
     user: User;
   };
 }
 
 export const loginSchema = z.object({
-  email_or_username: z.string().min(1, 'Email or username is required'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email_or_username: z.string().min(1, "Email or username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const registerSchema = z.object({
-  username: z.string()
-    .min(3, 'Username must be at least 3 characters')
-    .max(20, 'Username must be less than 20 characters')
-    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(20, "Username must be less than 20 characters")
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      "Username can only contain letters, numbers, underscores, and hyphens"
+    ),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export type LoginCredentials = z.infer<typeof loginSchema>;

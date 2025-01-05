@@ -6,8 +6,8 @@ import {
   User,
 } from "../types/auth";
 
-const TOKEN_KEY = "auth_token";
-const USER_KEY = "auth_user";
+export const TOKEN_KEY = "auth_token";
+export const USER_KEY = "auth_user";
 
 export const AuthService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
@@ -55,5 +55,6 @@ export const AuthService = {
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    // Clear any other auth-related data from localStorage if needed
   },
 };
