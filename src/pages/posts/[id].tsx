@@ -99,7 +99,7 @@ export default function PostDetailPage() {
               ) : (
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <span className="text-sm font-medium text-primary">
-                    {post.author.name[0]}
+                    {post.author.name}
                   </span>
                 </div>
               )}
@@ -107,7 +107,7 @@ export default function PostDetailPage() {
                 <div>
                   <p className="font-medium">{post.author.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {formatDate(post.createdAt)}
+                    {formatDate(post.created_at)}
                   </p>
                 </div>
                 <LikeButton

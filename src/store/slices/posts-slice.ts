@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Post, PaginatedResponse } from "../../types/post";
-import { PostsService } from "../../services/posts-service";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { Post, PaginatedResponse } from '../../types/post';
+import { PostsService } from '../../services/posts-service';
 
 interface PostsState {
   posts: Post[];
@@ -21,7 +21,7 @@ const initialState: PostsState = {
 };
 
 export const fetchPosts = createAsyncThunk(
-  "posts/fetchPosts",
+  'posts/fetchPosts',
   async (page: number = 1) => {
     const response = await PostsService.getPosts(page);
     return response;
@@ -29,7 +29,7 @@ export const fetchPosts = createAsyncThunk(
 );
 
 const postsSlice = createSlice({
-  name: "posts",
+  name: 'posts',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -48,7 +48,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to fetch posts";
+        state.error = action.error.message || 'Failed to fetch posts';
       });
   },
 });

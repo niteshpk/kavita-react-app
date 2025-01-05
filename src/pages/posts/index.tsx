@@ -39,7 +39,7 @@ export default function PostsPage() {
   };
 
   const handleTagSelect = (tagId: number) => {
-    setSelectedTags(prev =>
+    setSelectedTags(prev => 
       prev.includes(tagId)
         ? prev.filter(id => id !== tagId)
         : [...prev, tagId]
@@ -48,8 +48,8 @@ export default function PostsPage() {
 
   const filteredPosts = selectedTags.length > 0
     ? posts.filter(post =>
-      post.tags.some(tag => selectedTags.includes(tag.id))
-    )
+        post.tags.some(tag => selectedTags.includes(tag.id))
+      )
     : posts;
 
   if (loading && posts.length === 0) {
@@ -73,7 +73,7 @@ export default function PostsPage() {
         selectedTags={selectedTags}
         onTagSelect={handleTagSelect}
       />
-
+      
       {filteredPosts.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-lg text-muted-foreground">

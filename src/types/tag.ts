@@ -2,7 +2,7 @@ export interface Tag {
   id: number;
   name: string;
   created_at: string;
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface CreateTagData {

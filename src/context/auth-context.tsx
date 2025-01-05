@@ -21,16 +21,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const initAuth = async () => {
-      const token = AuthService.getToken();
-      if (token) {
-        try {
-          // TODO: Implement token validation/refresh logic
-          setLoading(false);
-        } catch (error) {
-          AuthService.removeToken();
-          setLoading(false);
+      try {
+        const token = AuthService.getToken();
+        const savedUser = AuthService.getUser();
+
+        if (token && savedUser) {
+          // TODO: Validate token with backend
+          setUser(savedUser);
         }
-      } else {
+      } catch (error) {
+        console.error('Auth initialization error:', handleError(error));
+        AuthService.logout();
+      } finally {
         setLoading(false);
       }
     };
@@ -41,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (token: string, userData: User) => {
     try {
       AuthService.setToken(token);
+      AuthService.setUser(userData);
       setUser(userData);
       toast.success('Welcome back!');
     } catch (error) {
@@ -50,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     try {
-      AuthService.removeToken();
+      AuthService.logout();
       setUser(null);
       toast.success('Logged out successfully');
     } catch (error) {
@@ -60,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const updateUser = (updatedUser: User) => {
     try {
+      AuthService.setUser(updatedUser);
       setUser(updatedUser);
     } catch (error) {
       console.error('Update user error:', handleError(error));
@@ -69,13 +73,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isAdmin = user?.roles?.includes('admin') ?? false;
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
+    <AuthContext.Provider value={{
+      user,
+      loading,
       isAdmin,
-      login, 
-      logout, 
-      updateUser 
+      login,
+      logout,
+      updateUser
     }}>
       {children}
     </AuthContext.Provider>
