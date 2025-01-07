@@ -1,4 +1,4 @@
-import { Tag } from './tag';
+import { Tag } from "./tag";
 
 export interface Post {
   id: number;
@@ -7,8 +7,8 @@ export interface Post {
   body: string;
   photo_id?: number;
   imageUrl?: string;
-  options?: Record<string, any>;
-  status: 'draft' | 'published';
+  options?: [] | null;
+  status: "draft" | "published";
   created_at: string;
   updated_at: string;
   user_has_liked: number;

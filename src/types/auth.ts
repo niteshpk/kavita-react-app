@@ -3,21 +3,23 @@ import { z } from "zod";
 export type UserRole = "admin" | "user";
 
 export interface User {
-  id: number;
-  uuid: string;
+  id: string;
   email: string;
   username: string;
-  status: string;
-  options: Record<string, any>;
+  name?: string;
+  avatar?: string;
+  uuid?: string;
+  roles: UserRole[];
+  status: "active" | "inactive" | "pending";
   created_at: string;
   updated_at: string;
-  roles: UserRole[];
 }
 
 export interface AuthResponse {
   success: boolean;
+  error?: boolean;
   message?: string;
-  data: {
+  data?: {
     token: string;
     user: User;
   };

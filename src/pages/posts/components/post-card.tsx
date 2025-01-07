@@ -40,17 +40,17 @@ export function PostCard({ post }: PostCardProps) {
             {post.author.avatar ? (
               <img
                 src={post.author.avatar}
-                alt={post.author.name}
+                alt={post.author.username}
                 className="w-6 h-6 rounded-full"
               />
             ) : (
               <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
                 <span className="text-xs font-medium text-primary">
-                  {post.author.name}
+                  {post.author.username[0].toUpperCase()}
                 </span>
               </div>
             )}
-            <span className="text-muted-foreground">{post.author.name}</span>
+            <span className="text-muted-foreground">{post.author.username}</span>
           </div>
           <time className="text-muted-foreground">
             {formatDate(post.created_at)}

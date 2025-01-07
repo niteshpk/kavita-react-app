@@ -26,6 +26,7 @@ export function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
         <div>
           <Input
             {...register('email_or_username')}
+            type="text"
             placeholder="Email or username"
             autoComplete="username"
             error={errors.email_or_username?.message}

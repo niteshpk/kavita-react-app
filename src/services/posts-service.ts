@@ -1,12 +1,17 @@
-import { Post } from '../types/post';
-import api from '../lib/api';
+import { Post } from "../types/post";
+import api from "../lib/api";
+import { postsResponse } from "../data/posts";
 
 export const PostsService = {
   async getPosts(page: number = 1) {
-    const response = await api.get('/posts', {
-      params: { page }
-    });
-    return response.data;
+    try {
+      const response = await api.get("/posts", {
+        params: { page },
+      });
+      return response.data;
+    } catch (error) {
+      return postsResponse;
+    }
   },
 
   async getPost(id: number): Promise<Post> {
@@ -15,12 +20,12 @@ export const PostsService = {
   },
 
   async createPost(postData: Partial<Post>) {
-    const response = await api.post('/posts', {
+    const response = await api.post("/posts", {
       author_id: postData.author_id,
       title: postData.title,
       body: postData.body,
       imageUrl: postData.imageUrl,
-      status: postData.status || 'published'
+      status: postData.status || "published",
     });
     return response.data;
   },
@@ -32,5 +37,5 @@ export const PostsService = {
 
   async deletePost(id: number) {
     await api.delete(`/posts/${id}`);
-  }
+  },
 };

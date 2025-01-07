@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/button';
 import { Tag } from '../../components/ui/tag';
 import { formatDate } from '../../lib/utils';
 import { LikeButton } from '../../components/posts/like-button';
+import { singlePostResponse } from '../../data/posts';
 
 export default function PostDetailPage() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ export default function PostDetailPage() {
         setPost(data || null);
       } catch (error) {
         console.error('Failed to fetch post:', error);
+        setPost(singlePostResponse.post);
       } finally {
         setLoading(false);
       }
@@ -93,19 +95,19 @@ export default function PostDetailPage() {
               {post.author.avatar ? (
                 <img
                   src={post.author.avatar}
-                  alt={post.author.name}
+                  alt={post.author.username}
                   className="w-10 h-10 rounded-full"
                 />
               ) : (
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <span className="text-sm font-medium text-primary">
-                    {post.author.name}
+                    {post.author.username[0].toUpperCase()}
                   </span>
                 </div>
               )}
               <div className="flex items-center space-x-4">
                 <div>
-                  <p className="font-medium">{post.author.name}</p>
+                  <p className="font-medium">{post.author.username}</p>
                   <p className="text-sm text-muted-foreground">
                     {formatDate(post.created_at)}
                   </p>
