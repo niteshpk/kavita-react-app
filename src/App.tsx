@@ -12,13 +12,14 @@ const RegisterPage = React.lazy(() => import('./pages/auth/register'));
 const ForgotPasswordPage = React.lazy(() => import('./pages/auth/forgot-password'));
 const HomePage = React.lazy(() => import('./pages/home'));
 const PostsPage = React.lazy(() => import('./pages/posts'));
+const CreatePostPage = React.lazy(() => import('./pages/posts/create'));
 const PostDetailPage = React.lazy(() => import('./pages/posts/[id]'));
 const ProfilePage = React.lazy(() => import('./pages/profile'));
 const AdminUsersPage = React.lazy(() => import('./pages/admin/users'));
 const AdminPostsPage = React.lazy(() => import('./pages/admin/posts'));
 const AdminTagsPage = React.lazy(() => import('./pages/admin/tags'));
 
-function App() {
+export default function App() {
   return (
     <Router>
       <AuthProvider>
@@ -48,16 +49,24 @@ function App() {
                 <HomePage />
               </Suspense>
             } />
-            <Route path="posts" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <PostsPage />
-              </Suspense>
-            } />
-            <Route path="posts/:id" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <PostDetailPage />
-              </Suspense>
-            } />
+            <Route path="posts">
+              <Route index element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PostsPage />
+                </Suspense>
+              } />
+              {/* Create route before dynamic route */}
+              <Route path="create" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <CreatePostPage />
+                </Suspense>
+              } />
+              <Route path=":id" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PostDetailPage />
+                </Suspense>
+              } />
+            </Route>
             <Route path="profile" element={
               <Suspense fallback={<LoadingSpinner />}>
                 <ProfilePage />
@@ -87,5 +96,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;

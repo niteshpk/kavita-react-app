@@ -17,7 +17,7 @@ export interface UserProfile {
     github?: string;
   };
   created_at: string;
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface ProfileFormData {

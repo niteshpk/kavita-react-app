@@ -6,19 +6,19 @@ let mockTags: Tag[] = [
     id: 1,
     name: "React",
     created_at: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: 2,
     name: "TypeScript",
     created_at: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: 3,
     name: "Frontend",
     created_at: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
 ];
 
@@ -36,7 +36,7 @@ export const TagsService = {
       id: mockTags.length + 1,
       name: data.name,
       created_at: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
     mockTags = [...mockTags, newTag];
     return newTag;

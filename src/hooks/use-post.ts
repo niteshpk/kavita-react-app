@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { Post } from "../types/post";
-import { PostsService } from "../services/posts-service";
-import { handleError } from "../lib/error-handler";
+import { useState, useEffect } from 'react';
+import { Post } from '../types/post';
+import { PostsService } from '../services/posts-service';
+import { handleError } from '../lib/error-handler';
 
 export function usePost(id: number) {
   const [post, setPost] = useState<Post | null>(null);
@@ -15,11 +15,11 @@ export function usePost(id: number) {
         if (response.success) {
           setPost(response.post);
         } else {
-          setError("Post not found");
+          setError('Post not found');
         }
       } catch (err) {
-        console.error("Failed to fetch post:", handleError(err));
-        setError("Failed to load post");
+        console.error('Failed to fetch post:', handleError(err));
+        setError('Failed to load post');
       } finally {
         setLoading(false);
       }

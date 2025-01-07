@@ -1,17 +1,12 @@
-import api from "../lib/api";
-import {
-  LoginCredentials,
-  RegisterCredentials,
-  AuthResponse,
-  User,
-} from "../types/auth";
+import api from '../lib/api';
+import { LoginCredentials, RegisterCredentials, AuthResponse, User } from '../types/auth';
 
-export const TOKEN_KEY = "auth_token";
-export const USER_KEY = "auth_user";
+export const TOKEN_KEY = 'auth_token';
+export const USER_KEY = 'auth_user';
 
 export const AuthService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>("/login", credentials);
+    const response = await api.post<AuthResponse>('/login', credentials);
     if (response.data.success) {
       this.setToken(response.data.data.token);
       this.setUser(response.data.data.user);
@@ -20,7 +15,7 @@ export const AuthService = {
   },
 
   async register(data: RegisterCredentials): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>("/register", data);
+    const response = await api.post<AuthResponse>('/register', data);
     if (response.data.success) {
       this.setToken(response.data.data.token);
       this.setUser(response.data.data.user);
@@ -28,10 +23,8 @@ export const AuthService = {
     return response.data;
   },
 
-  async forgotPassword(
-    email: string
-  ): Promise<{ success: boolean; message: string }> {
-    const response = await api.post("/forgot-password", { email });
+  async forgotPassword(email: string): Promise<{ success: boolean; message: string }> {
+    const response = await api.post('/forgot-password', { email });
     return response.data;
   },
 
@@ -56,5 +49,5 @@ export const AuthService = {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     // Clear any other auth-related data from localStorage if needed
-  },
+  }
 };

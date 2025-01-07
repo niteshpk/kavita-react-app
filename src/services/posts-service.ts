@@ -1,10 +1,10 @@
-import { Post } from "../types/post";
-import api from "../lib/api";
+import { Post } from '../types/post';
+import api from '../lib/api';
 
 export const PostsService = {
   async getPosts(page: number = 1) {
-    const response = await api.get("/posts", {
-      params: { page },
+    const response = await api.get('/posts', {
+      params: { page }
     });
     return response.data;
   },
@@ -14,8 +14,14 @@ export const PostsService = {
     return response.data.post;
   },
 
-  async createPost(post: Partial<Post>) {
-    const response = await api.post("/posts", post);
+  async createPost(postData: Partial<Post>) {
+    const response = await api.post('/posts', {
+      author_id: postData.author_id,
+      title: postData.title,
+      body: postData.body,
+      imageUrl: postData.imageUrl,
+      status: postData.status || 'published'
+    });
     return response.data;
   },
 
@@ -26,5 +32,5 @@ export const PostsService = {
 
   async deletePost(id: number) {
     await api.delete(`/posts/${id}`);
-  },
+  }
 };

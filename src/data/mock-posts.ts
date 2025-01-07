@@ -10,7 +10,7 @@ export const mockPosts: Post[] = [
       "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop",
     status: "published",
     created_at: "2024-03-10T10:00:00Z",
-    updatedAt: "2024-03-10T10:00:00Z",
+    updated_at: "2024-03-10T10:00:00Z",
     likes: 42,
     isLiked: false,
     tags: [
@@ -34,7 +34,7 @@ export const mockPosts: Post[] = [
       "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop",
     status: "published",
     created_at: "2024-03-09T15:30:00Z",
-    updatedAt: "2024-03-09T15:30:00Z",
+    updated_at: "2024-03-09T15:30:00Z",
     likes: 28,
     isLiked: true,
     tags: [
@@ -58,7 +58,7 @@ export const mockPosts: Post[] = [
       "https://images.unsplash.com/photo-1517134191118-9d595e4c8c2b?w=800&auto=format&fit=crop",
     status: "published",
     created_at: "2024-03-08T09:15:00Z",
-    updatedAt: "2024-03-08T09:15:00Z",
+    updated_at: "2024-03-08T09:15:00Z",
     likes: 35,
     isLiked: false,
     tags: [

@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const token = AuthService.getToken();
         const savedUser = AuthService.getUser();
-
+        
         if (token && savedUser) {
           // TODO: Validate token with backend
           setUser(savedUser);
@@ -73,13 +73,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isAdmin = user?.roles?.includes('admin') ?? false;
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
       isAdmin,
-      login,
-      logout,
-      updateUser
+      login, 
+      logout, 
+      updateUser 
     }}>
       {children}
     </AuthContext.Provider>
